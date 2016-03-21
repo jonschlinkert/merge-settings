@@ -1,6 +1,6 @@
 {
   "name": "merge-settings",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Load and merge configuration settings from multiple sources, in a specific order, and normalized according to a schema.",
   "homepage": "https://github.com/jonschlinkert/merge-settings",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
@@ -34,12 +34,17 @@
     "mocha": "^2.4.5"
   },
   "keywords": [
+    "config",
+    "configfile",
+    "data",
+    "extend",
+    "file",
+    "get",
+    "json",
     "merge",
+    "set",
     "settings"
   ],
-  "lintDeps": {
-    "ignore": []
-  },
   "verb": {
     "run": true,
     "toc": false,
@@ -50,6 +55,14 @@
     "plugins": [
       "gulp-format-md"
     ],
+    "related": {
+      "list": [
+        "mixin-deep",
+        "extend-shallow",
+        "data-store",
+        "base"
+      ]
+    },
     "reflinks": [
       "verb"
     ],
