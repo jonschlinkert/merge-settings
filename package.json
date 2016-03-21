@@ -1,7 +1,7 @@
 {
   "name": "merge-settings",
-  "description": "Load and merge configuration settings from multiple sources, in a specific order, and normalized according to a schema.",
   "version": "0.1.0",
+  "description": "Load and merge configuration settings from multiple sources, in a specific order, and normalized according to a schema.",
   "homepage": "https://github.com/jonschlinkert/merge-settings",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/merge-settings",
@@ -29,21 +29,32 @@
     "set-value": "^0.3.3"
   },
   "devDependencies": {
-    "gulp-format-md": "*",
-    "map-schema": "^0.1.1",
+    "gulp-format-md": "^0.1.7",
+    "map-schema": "^0.2.0",
     "mocha": "^2.4.5"
   },
-  "keywords": [],
+  "keywords": [
+    "merge",
+    "settings"
+  ],
   "lintDeps": {
     "ignore": []
   },
   "verb": {
+    "run": true,
+    "toc": false,
     "layout": "default",
+    "tasks": [
+      "readme"
+    ],
     "plugins": [
       "gulp-format-md"
     ],
-    "related": {
-      "list": []
+    "reflinks": [
+      "verb"
+    ],
+    "lint": {
+      "reflinks": true
     }
   }
 }
