@@ -13,6 +13,7 @@ require = utils;
  */
 
 require('arr-flatten', 'flatten');
+require('arr-union', 'union');
 require('get-value', 'get');
 require('isobject', 'isObject');
 require('mixin-deep', 'merge');
