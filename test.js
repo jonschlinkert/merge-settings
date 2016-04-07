@@ -10,7 +10,9 @@ describe('merge-settings', function() {
   describe('main export', function() {
     beforeEach(function() {
       schema = new Schema();
-      settings = new Settings(schema);
+      settings = new Settings({
+        normalize: schema.normalize.bind(schema)
+      });
     });
 
     it('should export a function', function() {
@@ -49,7 +51,9 @@ describe('merge-settings', function() {
   describe('methods', function() {
     beforeEach(function() {
       schema = new Schema()
-      settings = new Settings(schema);
+      settings = new Settings({
+        normalize: schema.normalize.bind(schema)
+      });
     });
 
     it('should add a config object to the `configs` array', function() {
@@ -77,17 +81,20 @@ describe('merge-settings', function() {
   describe('schema', function() {
     beforeEach(function() {
       schema = new Schema()
-        .field('plugins', ['array', 'object'], {
+        .field('plugins', ['array', 'object', 'string'], {
           normalize: function(val) {
-            if (!val) return;
-            return Array.isArray(val) ? val : [val];
+            return val ? (Array.isArray(val) ? val : [val]) : [];
           }
         })
         .field('license', 'string', {
           default: 'MIT'
         });
 
-      settings = new Settings(schema);
+      settings = new Settings({
+        normalize: function(config) {
+          return schema.normalize(config);
+        }
+      });
     });
 
     it('should add default values to the returned object', function() {

@@ -3,19 +3,35 @@
 var utils = require('./utils');
 
 /**
- * Create an instance of `Settings`.
+ * Create an instance of `Settings` with the given `options`.
  *
+ * ```js
+ * var settings = new Settings();
+ * ```
+ * @param {Object} `options`
  * @api public
  */
 
-function Settings(schema) {
-  if (!utils.isObject(schema) || !schema.isSchema) {
-    throw new Error('expected an instance of map-schema');
-  }
-  this.schema = schema;
+function Settings(options) {
+  this.options = options || {};
   this.configs = [];
   this.cache = {};
 }
+
+/**
+ * Normalize the given object with the user-defined
+ * `options.normalize` function, or return the object unchanged
+ * if `options.normalize` is not defined.
+ *
+ * @param {Object} `config` The object to normalize.
+ */
+
+Settings.prototype.normalize = function(config) {
+  if (typeof this.options.normalize === 'function') {
+    return this.options.normalize(config);
+  }
+  return config;
+};
 
 /**
  * Add a `config` object to be merged.
@@ -54,7 +70,7 @@ Settings.prototype.set = function(key, config) {
  */
 
 Settings.prototype.get = function(key) {
-  return this.schema.normalize(utils.get(this.cache, key));
+  return this.normalize(utils.get(this.cache, key));
 };
 
 /**
@@ -125,28 +141,59 @@ Settings.prototype.addConfigs = function(config) {
 };
 
 /**
- * Merge normalized config objects.
+ * Merge the given (optional) `config` object with cached config objects
+ * in the order in which the objects were defined. If a `normalize` function
+ * is passed on the contructor options, or as the first or second argument
+ * to `.merge`, it will be used on each config object before merging it onto
+ * the results object.
  *
  * ```js
- * var config = {};
- * configs.merge(config);
- * ```
+ * var settings = new Settings()
+ *   .set('foo', {a: 'b'})
+ *   .set('bar', {c: 'd'})
+ *   .set('baz', {e: 'f'})
+ *   .merge();
  *
+ * console.log(settings);
+ * //=> {a: 'b', c: 'd', e: 'f'}
+ *
+ * // Pass a normalize function on the
+ * // ctor options, or to .merge as first or second arg
+ * var settings = new Settings()
+ *   .set('foo', {a: 'b'})
+ *   .set('bar', {c: 'd'})
+ *   .set('baz', {e: 'f'})
+ *   .merge(function(config) {
+ *     // normalize config object
+ *   });
+ *
+ * console.log(settings);
+ * //=>
+ * ```
  * @param {Object} `config`
  * @api public
  */
 
 Settings.prototype.merge = function(config) {
+  var fn = this.normalize.bind(this);
+
+  if (typeof config === 'function') {
+    fn = config.bind(this);
+    config = null;
+  }
+
   if (config) this.addConfig.apply(this, arguments);
   var len = this.configs.length;
   var idx = -1;
   var res = {};
 
   while (++idx < len) {
-    var obj = this.schema.normalize(this.configs[idx]);
+    var obj = fn(this.configs[idx]);
+
     for (var key in obj) {
       if (obj.hasOwnProperty(key)) {
         var val = obj[key];
+
         if (utils.isObject(val)) {
           res[key] = utils.merge({}, res[key], val);
           continue;
