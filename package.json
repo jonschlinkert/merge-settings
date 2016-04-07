@@ -1,7 +1,7 @@
 {
   "name": "merge-settings",
   "description": "Load and merge configuration settings from multiple sources, in a specific order, and normalized according to a schema.",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "homepage": "https://github.com/jonschlinkert/merge-settings",
   "author": "Jon Schlinkert (https://github.com/jonschlinkert)",
   "repository": "jonschlinkert/merge-settings",
@@ -33,10 +33,10 @@
     "gulp": "^3.9.1",
     "gulp-eslint": "^2.0.0",
     "gulp-format-md": "^0.1.7",
-    "gulp-istanbul": "^0.10.3",
+    "gulp-istanbul": "^0.10.4",
     "gulp-mocha": "^2.2.0",
     "gulp-unused": "^0.1.2",
-    "map-schema": "^0.2.0",
+    "map-schema": "^0.2.3",
     "mocha": "^2.4.5"
   },
   "keywords": [
